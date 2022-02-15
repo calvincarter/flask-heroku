@@ -6,10 +6,8 @@ from models import db, connect_db, Pet
 
 app = Flask(__name__)
 
-db_url = (os.environ.get('DATABASE_URL', 'postgresql:///heroku'))
-
-if not db_url.startswith("postgresql"):
-    db_url = db_url.replace("postgres", "postgresql", 1)
+# https://stackoverflow.com/questions/66690321/flask-and-heroku-sqlalchemy-exc-nosuchmoduleerror-cant-load-plugin-sqlalchemy
+db_url = (os.environ.get('DATABASE_URL', 'postgres:///heroku')).replace("://", "ql://", 1)
 
 app.config['SECRET_KEY'] = (os.environ.get('SECRET_KEY', 'noonewilleverknow'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
