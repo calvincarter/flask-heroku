@@ -6,10 +6,15 @@ from models import db, connect_db, Pet
 
 app = Flask(__name__)
 
+db_url = (os.environ.get('DATABASE_URL', 'postgresql:///heroku'))
+
+if not db_url.startswith("postgresql"):
+    db_url = db_url.replace("postgres", "postgresql", 1)
+
 app.config['SECRET_KEY'] = (os.environ.get('SECRET_KEY', 'noonewilleverknow'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URL', 'postgresql:///heroku'))
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 
 connect_db(app)
 db.create_all()
